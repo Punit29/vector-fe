@@ -1,6 +1,7 @@
 // submit.js
 
-import { useReactFlow } from "reactflow";
+import React from 'react';
+import { useReactFlow } from 'reactflow';
 
 export const SubmitButton = () => {
   const { getNodes, getEdges } = useReactFlow();
@@ -18,16 +19,16 @@ export const SubmitButton = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/pipelines/parse", {
-        method: "POST",
+      const response = await fetch('http://localhost:8000/pipelines/parse', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
 
       const result = await response.json();
@@ -35,22 +36,14 @@ export const SubmitButton = () => {
         `Number of Nodes: ${result.num_nodes}, Number of Edges: ${result.num_edges}, Is DAG: ${result.is_dag}`
       );
     } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to submit the pipeline. Please try again.");
+      console.error('Error:', error);
+      alert('Failed to submit the pipeline. Please try again.');
     }
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <button type="submit" onClick={handleSubmit}>
-        Submit
-      </button>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <button type="submit" onClick={handleSubmit}>Submit</button>
     </div>
   );
 };
