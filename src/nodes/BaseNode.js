@@ -13,17 +13,7 @@ const BaseNode = ({ id, data, type, customFields, customHandles }) => {
   };
 
   return (
-    <div
-      style={{
-        width: 200,
-        display: "flex",
-        flexDirection: "column",
-        border: "1px solid blue",
-        borderRadius: "5px",
-        padding: "4px ",
-        boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
-      }}
-    >
+    <div className="box">
       <div style={{ textAlign: "center", fontWeight: 500 }}>
         <span>{type}</span>
       </div>
