@@ -1,8 +1,20 @@
 import { useState, useEffect } from "react";
 import { Handle, Position } from "reactflow";
+import { useStore } from "../store";
+
 
 const BaseNode = ({ id, data, type, customFields, customHandles }) => {
+
+
+  console.log("id", id, "data", data, " type, customFields, customHandles", type, customFields, customHandles)
+
   const [state, setState] = useState(data || {});
+
+
+  const { text, setText } = useStore((state) => ({
+    text: state.text,
+    setText: state.setText,
+  }));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -10,7 +22,11 @@ const BaseNode = ({ id, data, type, customFields, customHandles }) => {
       ...prevState,
       [name]: value,
     }));
+    setText(value)
+    console.log("data", data)
   };
+
+
 
   return (
     <div className="box">
@@ -53,6 +69,7 @@ const BaseNode = ({ id, data, type, customFields, customHandles }) => {
             position={handle.position}
             id={`${id}-${handle.id}`}
             style={handle.style}
+            isConnectable={true}
           />
         ))}
     </div>
@@ -60,3 +77,4 @@ const BaseNode = ({ id, data, type, customFields, customHandles }) => {
 };
 
 export default BaseNode;
+

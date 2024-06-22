@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BaseNode from "./BaseNode";
 import { Handle, Position } from "reactflow";
+import { useStore } from "../store";
 
 // InputNode
 export const InputNode = (props) => {
@@ -30,19 +31,60 @@ export const InputNode = (props) => {
 };
 
 // TextNode
-export const TextNode = (props) => {
-  const customFields = [{ label: "Text", type: "text", name: "text" }];
-  const customHandles = [
-    { type: "source", position: Position.Right, id: "output" },
-  ];
+export const TextNode = ({ id, data }) => {
+  console.log("id", id, "data ", data)
+
+  const { text, setText } = useStore((state) => ({
+    text: state.text,
+    setText: state.setText,
+  }));
+
+  useEffect(() => {
+    findVariables(text)
+  }, [text]);
+
+
+  const findVariables = (text) => {
+    console.log("text", text)
+    const regex = /{{(.*?)}}/g;
+    let match;
+    const variables = [];
+    while ((match = regex.exec(text)) !== null) {
+      variables.push(match[1]);
+    }
+    return variables;
+  };
+
+  const variables = findVariables(text);
+  console.log("variables", variables)
+
   return (
     <BaseNode
-      {...props}
+      id={id}
       type="Text"
-      customFields={customFields}
-      customHandles={customHandles}
+      data={{ text }}
+      customFields={[{ label: 'Text', type: 'textarea', name: 'text' }]}
+      // customHandles={[{ type: 'target', position: Position.Left, id: 'work' }]}
+      customHandles={variables.map((variable, index) => (
+
+        //   {
+        //   type: 'source',
+        //   position: Position.Left,
+        //   id: `text-${id}-${index}`, // Unique handle ID
+        // }
+
+        { type: 'source', position: Position.Left, id: "text-1-input" }
+
+        // {type: 'target', position: 'left', id: 'prompt', style: {…}}
+        // 2
+        // : 
+        // {type: 'source', position: 'right', id: 'response'}
+
+
+      ))}
     />
   );
+
 };
 
 // OutputNode
